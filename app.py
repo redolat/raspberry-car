@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from gpiozero import Motor
 
 app = Flask(__name__)
@@ -8,9 +8,12 @@ motor1 = Motor(forward=17, backward=18)  # GPIO pins for Motor 1
 motor2 = Motor(forward=22, backward=23)  # GPIO pins for Motor 2
 motor3 = Motor(forward=24, backward=25)  # GPIO pins for Motor 3
 
+
 @app.route('/')
 def index():
-    return jsonify({"message": "Welcome to the DC Motor Control API!"})
+    return render_template('index.html')
+    # return jsonify({"message": "Welcome to the DC Motor Control API!"})
+
 
 @app.route('/motor/<int:motor_id>/<string:direction>', methods=['POST'])
 def control_motor(motor_id, direction):
@@ -32,6 +35,7 @@ def control_motor(motor_id, direction):
 
     return jsonify({"motor": motor_id, "direction": direction})
 
+
 @app.route('/motor/<int:motor_id>/stop', methods=['POST'])
 def stop_motor(motor_id):
     if motor_id == 1:
@@ -45,6 +49,7 @@ def stop_motor(motor_id):
 
     motor.stop()
     return jsonify({"motor": motor_id, "status": "stopped"})
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
