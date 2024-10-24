@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DC Motor Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .motor-control {
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>DC Motor Control Panel</h1>
+
+    <div class="motor-control">
+        <h2>Motor 1</h2>
+        <button onclick="controlMotor(1, 'cw')">Clockwise</button>
+        <button onclick="controlMotor(1, 'ccw')">Counterclockwise</button>
+        <button onclick="stopMotor(1)">Stop</button>
+    </div>
+
+    <div class="motor-control">
+        <h2>Motor 2</h2>
+        <button onclick="controlMotor(2, 'cw')">Clockwise</button>
+        <button onclick="controlMotor(2, 'ccw')">Counterclockwise</button>
+        <button onclick="stopMotor(2)">Stop</button>
+    </div>
+
+    <div class="motor-control">
+        <h2>Motor 3</h2>
+        <button onclick="controlMotor(3, 'cw')">Clockwise</button>
+        <button onclick="controlMotor(3, 'ccw')">Counterclockwise</button>
+        <button onclick="stopMotor(3)">Stop</button>
+    </div>
+
+    <script>
+        function controlMotor(motorId, direction) {
+            fetch(`/motor/${motorId}/${direction}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert(`Motor ${motorId} is rotating ${direction}.`))
+                .catch(error => console.error('Error:', error));
+        }
+
+        function stopMotor(motorId) {
+            fetch(`/motor/${motorId}/stop`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => alert(`Motor ${motorId} has stopped.`))
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
